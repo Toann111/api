@@ -1,13 +1,47 @@
-import express from 'express';
+/* eslint-disable no-console */
 
-const app = express()
-const hostname = "localhost";
-const port = 8017;
 
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
+import express from 'express'
+import exitHook from 'async-exit-hook'
+import { CONNECT_DB, CLOSE_DB} from '~/config/mongodb'
+import { env } from '~/config/environment'
+import { APIs_V1 } from '~/routes/v1'
 
-app.listen(port, hostname, () => {
-  console.log(`Hello Toan , I'am running sever at http://${hostname}:${port}/`);
-});
+const START_SERVER = () => {
+  const app = express()
+
+  app.use(express.json())
+
+  app.use('/v1', APIs_V1)
+
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
+    console.log(`3. Hi ${env.AUTHOR}, I am running at http://${ env.APP_HOST }:${ env.APP_PORT }/`)
+  })
+
+  exitHook(() => {
+    console.log('4. Server is shutting down...')
+    CLOSE_DB()
+    console.log('5. Disconnected from MongoDB Cloud Atlas')
+  })
+}
+
+(async () => {
+  try {
+    console.log('1. Connecting MongoDB Cloud Atlas...!')
+    await CONNECT_DB()
+    console.log('2. Connected to MongoDB Cloud Atlas !')
+
+    START_SERVER()
+  } catch (error) {
+    console.error(error)
+    process.exit(0)
+  }
+})()
+
+// CONNECT_DB()
+//   .then(() => console.log('Connected to MongoDB Cloud Atlas!'))
+//   .then(() => START_SERVER())
+//   .catch(error => {
+//     console.error(error)
+//     process.exit(0)
+//   })
