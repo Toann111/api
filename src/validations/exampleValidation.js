@@ -10,7 +10,8 @@ const createNew = async(req, res, next) => {
     price: Joi.number().required(),
     color: Joi.array().items(
       Joi.string()
-    ).required()
+    ).required(),
+    image: Joi.string().uri().required()
   })
   try {
     await correctCondition.validateAsync(req.body, { abortEarly: false })
