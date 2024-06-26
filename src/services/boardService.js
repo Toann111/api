@@ -16,7 +16,7 @@ const createNew = async (reqBody) => {
   try {
     const newBoard = {
       ...reqBody,
-      slug: slugify(reqBody.title)
+      slug: slugify(reqBody.name)
     }
     const createBoard = await boardModel.createNew(newBoard)
 
