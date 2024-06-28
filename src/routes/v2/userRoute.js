@@ -5,8 +5,8 @@
  */
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { boardValidation } from '~/validations/boardValidation'
-import { boardController } from '~/controllers/boardController'
+import { userValidation } from '~/validations/userValidation'
+import { userController } from '~/controllers/userController'
 
 const Router = express.Router()
 
@@ -14,10 +14,10 @@ Router.route('/')
   .get((req, res) => {
     res.status(StatusCodes.OK).json({ massage: 'Notes: API get list boards.' })
   })
-  .post(boardValidation.createNew, boardController.createNew)
+  .post(userValidation.createNew, userController.createNew)
 
 Router.route('/:id')
-  .get(boardController.getDetails)
+  .get(userController.getDetails)
   .put()
 
-export const boardRoute = Router
+export const userRoute = Router

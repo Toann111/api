@@ -6,6 +6,7 @@ import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb'
 import { env } from '~/config/environment'
 import { APIs_V1 } from '~/routes/v1'
 import { errorHandlingMiddleware } from './middlewares/errorHandlingMiddleware'
+import { APIs_V2 } from './routes/v2'
 
 const START_SERVER = () => {
   const app = express()
@@ -13,6 +14,7 @@ const START_SERVER = () => {
   app.use(express.json())
 
   app.use('/v1', APIs_V1)
+  app.use('/v2', APIs_V2)
 
   // middleware xu ly loi tap trung
   app.use(errorHandlingMiddleware)
