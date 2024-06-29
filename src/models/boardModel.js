@@ -55,11 +55,20 @@ const getDetails = async (id = number) => {
     throw new Error(error)
   }
 }
+const getProduct = async () => {
+  try {
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).find().toArray()
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
   createNew,
   findOneById,
-  getDetails
+  getDetails,
+  getProduct
 }

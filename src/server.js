@@ -7,6 +7,7 @@ import { env } from '~/config/environment'
 import { APIs_V1 } from '~/routes/v1'
 import { errorHandlingMiddleware } from './middlewares/errorHandlingMiddleware'
 import { APIs_V2 } from './routes/v2'
+import { boardController } from './controllers/boardController'
 
 const START_SERVER = () => {
   const app = express()
@@ -15,7 +16,15 @@ const START_SERVER = () => {
 
   app.use('/v1', APIs_V1)
   app.use('/v2', APIs_V2)
-
+  app.get('/', async (req, res) => {
+    try {
+        const result = await boardController.getProduct
+        res.json(result)
+        console.log('data', result); // eslint-disable-line no-console
+    } catch (error) {
+        res.status(500).send('Error fetching the board collection')
+    }
+});
   // middleware xu ly loi tap trung
   app.use(errorHandlingMiddleware)
 

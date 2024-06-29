@@ -34,7 +34,17 @@ const getDetails = async (boardId) => {
     return board
   } catch (error) { throw error }
 }
+const getProduct = async () => {
+  try {
+    const board = await boardModel.getProduct()
+    if (!board) {
+      throw new ApiError(StatusCodes.NOT_FOUND, 'Board not found! .')
+    }
+    return board
+  } catch (error) { throw error }
+}
 export const boardService = {
   createNew,
-  getDetails
+  getDetails,
+  getProduct
 }
