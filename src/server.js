@@ -1,47 +1,45 @@
-/* eslint-disable no-console */
-
-
-import express from 'express'
-import exitHook from 'async-exit-hook'
-import { CONNECT_DB, CLOSE_DB} from '~/config/mongodb'
-import { env } from '~/config/environment'
-import { APIs_V1 } from '~/routes/v1'
+const express = require("express");
+const exitHook = require("async-exit-hook");
+const { CONNECT_DB, CLOSE_DB } = require("./config/mongodb");
+const { env } = require("./config/environment");
+const { APIs_V1 } = require("./routes/v1"); // Corrected import
+const {
+  errorHandlingMiddleware,
+} = require("./middlewares/errorHandlingMiddleware");
 
 const START_SERVER = () => {
-  const app = express()
+  const app = express();
 
-  app.use(express.json())
+  app.use(express.json());
 
-  app.use('/v1', APIs_V1)
+  app.use("/v1", APIs_V1); // Updated route
+
+  app.get("/", async (req, res) => {
+    res.send("API is running");
+  });
+
+  app.use(errorHandlingMiddleware);
 
   app.listen(env.APP_PORT, env.APP_HOST, () => {
-    console.log(`3. Hi ${env.AUTHOR}, I am running at http://${ env.APP_HOST }:${ env.APP_PORT }/`)
-  })
+    console.log(`Server is running at http://${env.APP_HOST}:${env.APP_PORT}/`);
+  });
 
   exitHook(() => {
-    console.log('4. Server is shutting down...')
-    CLOSE_DB()
-    console.log('5. Disconnected from MongoDB Cloud Atlas')
-  })
-}
+    console.log("Server is shutting down...");
+    CLOSE_DB();
+    console.log("Disconnected from MongoDB Cloud Atlas");
+  });
+};
 
 (async () => {
   try {
-    console.log('1. Connecting MongoDB Cloud Atlas...!')
-    await CONNECT_DB()
-    console.log('2. Connected to MongoDB Cloud Atlas !')
+    console.log("Connecting to MongoDB Cloud Atlas...!");
+    await CONNECT_DB();
+    console.log("Connected to MongoDB Cloud Atlas!");
 
-    START_SERVER()
+    START_SERVER();
   } catch (error) {
-    console.error(error)
-    process.exit(0)
+    console.error(error);
+    process.exit(0);
   }
-})()
-
-// CONNECT_DB()
-//   .then(() => console.log('Connected to MongoDB Cloud Atlas!'))
-//   .then(() => START_SERVER())
-//   .catch(error => {
-//     console.error(error)
-//     process.exit(0)
-//   })
+})();

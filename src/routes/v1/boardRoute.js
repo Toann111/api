@@ -1,19 +1,16 @@
-/**
- * Updated by trungquandev.com's author on August 17 2023
- * YouTube: https://youtube.com/@trungquandev
- * "A bit of fragrance clings to the hand that gives flowers!"
- */
-import express from 'express'
-import { StatusCodes } from 'http-status-codes'
-import { boardValidation } from '~/validations/exampleValidation'
-import { boardController } from '~/controllers/boardController'
+// import express from 'express'
+// // import { StatusCodes } from 'http-status-codes'
+// import { boardValidation } from '~/validations/boardValidation'
+// import { boardController } from '~/controllers/boardController'
 
-const Router = express.Router()
+// const Router = express.Router()
 
-Router.route('/')
-  .get((req, res) => {
-    res.status(StatusCodes.OK).json({ massage: 'Notes: API get list boards.' })
-  })
-  .post(boardValidation.createNew, boardController.createNew)
+// Router.route('/')
+//   .get(boardController.getProduct)
+//   .post(boardValidation.createNew, boardController.createNew)
 
-export const boardRoute = Router
+// Router.route('/:id')
+//   .get(boardController.getDetails)
+//   .put()
+
+// export const boardRoute = Router
